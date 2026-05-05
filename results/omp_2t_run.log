@@ -1,0 +1,124 @@
+Reading graph...
+Generating edge weights...
+Running on large.bin: |V|=100000000, |E|=199999998, param=, num_src=10, num_round=5
+OpenMP threads: 2
+source 0: 329511    
+Warmup Round: 0.815757
+Round 1: 0.812254
+Round 2: 0.782725
+Round 3: 0.784275
+Round 4: 0.778167
+Round 5: 0.782231
+Average time: 0.787930
+Running verifier...
+Our running time: 0.814583
+dijkstra running time: 0.183488  
+
+source 1: 28713910  
+Warmup Round: 0.758309
+Round 1: 0.781527
+Round 2: 0.766309
+Round 3: 0.748666
+Round 4: 0.748773
+Round 5: 0.786353
+Average time: 0.766326
+Running verifier...
+Our running time: 0.735360
+dijkstra running time: 0.110424  
+
+source 2: 98448204  
+Warmup Round: 0.749904
+Round 1: 0.750190
+Round 2: 0.761336
+Round 3: 0.787481
+Round 4: 0.789349
+Round 5: 0.765030
+Average time: 0.770677
+Running verifier...
+Our running time: 0.749692
+dijkstra running time: 0.115739  
+
+source 3: 32612764  
+Warmup Round: 0.767809
+Round 1: 0.771807
+Round 2: 0.788282
+Round 3: 0.772669
+Round 4: 0.792724
+Round 5: 0.768903
+Average time: 0.778877
+Running verifier...
+Our running time: 0.759824
+dijkstra running time: 0.111060  
+
+source 4: 46348061  
+Warmup Round: 0.773817
+Round 1: 0.768801
+Round 2: 0.780451
+Round 3: 0.775939
+Round 4: 0.765973
+Round 5: 0.772267
+Average time: 0.772686
+Running verifier...
+Our running time: 0.749384
+dijkstra running time: 0.113457  
+
+source 5: 32663278  
+Warmup Round: 0.769591
+Round 1: 0.767103
+Round 2: 0.770670
+Round 3: 0.779504
+Round 4: 0.767878
+Round 5: 0.768432
+Average time: 0.770717
+Running verifier...
+Our running time: 0.753951
+dijkstra running time: 0.116115  
+
+source 6: 71828276  
+Warmup Round: 0.786775
+Round 1: 0.781868
+Round 2: 0.770920
+Round 3: 0.760711
+Round 4: 0.756118
+Round 5: 0.761621
+Average time: 0.766248
+Running verifier...
+Our running time: 0.742898
+dijkstra running time: 0.104001  
+
+source 7: 90419040  
+Warmup Round: 0.755368
+Round 1: 0.761520
+Round 2: 0.767545
+Round 3: 0.756881
+Round 4: 0.759387
+Round 5: 0.774809
+Average time: 0.764028
+Running verifier...
+Our running time: 0.758137
+dijkstra running time: 0.109327  
+
+source 8: 31203572  
+Warmup Round: 0.821056
+Round 1: 0.759781
+Round 2: 0.760485
+Round 3: 0.759870
+Round 4: 0.758556
+Round 5: 0.755064
+Average time: 0.758751
+Running verifier...
+Our running time: 0.753856
+dijkstra running time: 0.100256  
+
+source 9: 48861505  
+Warmup Round: 0.778764
+Round 1: 0.818514
+Round 2: 0.757761
+Round 3: 0.767910
+Round 4: 0.757099
+Round 5: 0.761801
+Average time: 0.772617
+Running verifier...
+Our running time: 0.754803
+dijkstra running time: 0.119088  
+
