@@ -1,0 +1,17 @@
+# Binary datasets
+*.bin
+
+# Compiled binaries
+bin/
+sssp
+sssp_baseline
+sssp_omp
+symmetrize
+
+# Results and logs
+results/*.log
+results/*.tsv
+
+# OS files
+.DS_Store
+Thumbs.db
