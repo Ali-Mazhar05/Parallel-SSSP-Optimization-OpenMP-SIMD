@@ -1,71 +1,48 @@
-Parallel-SSSP 
-====================== 
+# Parallel-SSSP Optimization Project
 
-This repository includes the implmentation of $\rho$-stepping, $\Delta$\*-stepping, and Bellman-Ford. 
+This project focuses on high-performance optimizations for the Single Source Shortest Path (SSSP) algorithm using OpenMP and SIMD (AVX2) intrinsics. The implementation builds upon the $\rho$-stepping and $\Delta$-stepping algorithms.
 
-## Developing 
+## Key Optimizations
 
-### Prerequisites 
-* g++ &gt;= 7 with support for Cilk Plus and C++17 (It is tested with g++ 7.5.0) 
+### 1. Persistent Thread Pool (Zero Fork-Join Overhead)
+The original implementation launched and tore down the OpenMP thread pool in every iteration of the SSSP main loop. For graphs with thousands of rounds (like the Germany road graph), this overhead dominated the execution time. 
+- **Change**: Wrapped the entire SSSP main loop in a single persistent `#pragma omp parallel` region.
+- **Result**: Threads stay alive throughout the algorithm, synchronizing via barriers instead of costly `pthread_join`/`pthread_create` pairs.
 
-### Setting up 
-Clone the library with submodule 
-```shell
-git clone --recurse-submodules https://github.com/ucrparlay/Parallel-SSSP.git 
-cd Parallel-SSSP/ 
+### 2. Parallel Two-Pass Prefix Scan
+Sparse mode relaxation requires calculating offsets for merging thread-local buffers into the global frontier.
+- **Change**: Replaced the serial $O(FrontierSize)$ prefix scan with a parallel two-pass scan.
+- **Result**: Reduced the serial bottleneck in every round from millions of additions to just $O(NumThreads)$ (typically 8-32), significantly improving scalability on high-core-count machines.
+
+### 3. Bit-Packed Frontier Management
+Replaced the `atomic<bool>` frontier arrays (which consume 1 byte per vertex) with bit-packed `atomic<uint64_t>` words.
+- **Optimization**: Each 64-byte cache line now covers 512 vertices (64 words * 8 bits) instead of just 64.
+- **Benefit**: Virtually eliminates false sharing when threads update adjacent vertices in the frontier. It also reduces memory bandwidth requirements during the dense phase scans.
+
+### 4. SIMD Hardware Gather (AVX2)
+SSSP is traditionally memory-bound due to the indirect access pattern `dist[neighbor]`.
+- **Change**: Implemented `_mm256_i32gather_epi32` to perform 8 distance lookups in parallel.
+- **Benefit**: Hardware gather allows the CPU's load-store units to overlap multiple cache misses and take advantage of memory-level parallelism (MLP) better than scalar loads.
+
+### 5. SIMD-Vectorized Pull Loops
+In the dense phase and local BFS expansion for symmetrized graphs:
+- **Change**: Added `#pragma omp simd reduction(min:best)` to the pull loops.
+- **Result**: The compiler generates `_mm256_min_epi32` instructions to find the best incoming distance across 8 neighbors simultaneously.
+
+## Build and Run
+
+### Prerequisites
+* g++ >= 7 with support for OpenMP and AVX2.
+
+### Compilation
+```bash
+make omp
 ```
 
-Alternatively, you can first clone it and add the submodule 
-```shell
-git clone https://github.com/ucrparlay/Parallel-SSSP.git 
-git submodule update --init --recursive 
-cd Parallel-SSSP/ 
+### Usage
+```bash
+./bin/sssp_omp -i <graph_file> -a delta-stepping -p <delta_value> -v
 ```
 
-### Building
-A makefile is given in the repository, you can compile the code by: 
-```shell
-make 
-```
-
-## Usage
-```shell
-./sssp [-i input_file] [-p parameter] [-w] [-s] [-v] [-a algorithm] 
-```
-Options: 
-* -i input file path 
-* -p parameter(e.g. delta, rho) 
-* -w weighted input graph 
-* -s symmetrized input graph 
-* -v verify result 
-* -a algorithm: [rho-stepping] [delta-stepping] [bellman-ford] 
-
-For example, if you want to run $\rho$-stepping on a symmetrized weighted graph INPUT_NAME, set
-$\rho$=2000000, and use Dijkstra's algorithm to verify the result after the test, you can run: 
-```shell
-./sssp -i INPUT_NAME -p 2000000 -w -s -v -a rho-stepping
-```
-## Graph Formats
-The application can auto-detect the format of the input graph based on the suffix of the filename. Here is a list of supported graph formats: 
-+ `.bin` The binary graph format from [GBBS](https://github.com/ParAlg/gbbs). 
-+ `.adj` The adjacency graph format from [Problem Based Benchmark suite](http://www.cs.cmu.edu/~pbbs/benchmarks/graphIO.html). 
-+ `.wsg` The weighted serialized pre-built graph format from [GAPBS](https://github.com/sbeamer/gapbs). 
-+ `.gr` The galois graph file from [Galois](https://github.com/IntelligentSoftwareSystems/Galois). 
-
-Some unweighted binary graphs can be found in our [Google Drive](https://drive.google.com/drive/u/3/folders/1ZuhfaLmdL-EyOiWYqZGD1rOy_oSFRWe4). For storage limit, we don't provide the large graphs used in our paper. They can be found in [Stanford Network Analysis Project](http://snap.stanford.edu/) and [Web Data Commons](http://webdatacommons.org/hyperlinkgraph/). 
-
-## Reference 
-Xiaojun Dong, Yan Gu, Yihan Sun, and Yunming Zhang. [Efficient Stepping Algorithms and Implementations for Parallel Shortest Paths](https://dl.acm.org/doi/10.1145/3409964.3461782). In *Proceedings of the 33rd ACM Symposium on Parallelism in Algorithms and Architectures*, pp. 184-197, 2021.  
-
-Xiaojun Dong, Yan Gu, Yihan Sun, and Yunming Zhang. [Efficient Stepping Algorithms and Implementations for Parallel Shortest Paths](https://arxiv.org/abs/2105.06145). *arXiv preprint 2105.06145*, 2021.  
-
-If you use our code, please cite our paper:
-```
-@inproceedings{dong2021efficient,
-  title     = {Efficient stepping algorithms and implementations for parallel shortest paths},
-  author    = {Dong, Xiaojun and Gu, Yan and Sun, Yihan and Zhang, Yunming},
-  booktitle = {Proceedings of the 33rd ACM Symposium on Parallelism in Algorithms and Architectures},
-  pages     = {184--197},
-  year      = {2021}
-}
-```
+## Performance Analysis
+Detailed performance comparisons between the baseline and optimized versions can be found in the accompanying [Analysis Report](analysis_report.md).
