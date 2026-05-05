@@ -5,8 +5,9 @@
 using namespace std;
 using namespace parlay;
 
-constexpr int NUM_SRC = 10;
-constexpr int NUM_ROUND = 5;
+//changed this to 3 and 1 for testing
+constexpr int NUM_SRC = 3;
+constexpr int NUM_ROUND = 1;
 
 constexpr size_t LOCAL_QUEUE_SIZE = 4096;
 constexpr size_t DEG_THLD = 20;
