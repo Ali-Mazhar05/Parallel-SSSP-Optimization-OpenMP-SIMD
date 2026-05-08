@@ -1,0 +1,28 @@
+Reading graph...
+Generating edge weights...
+Running on Germany_sym.bin: |V|=12277375, |E|=32266600, param=32768, num_src=3, num_round=1
+OpenMP threads: 2
+source 0: 7832761   
+Warmup Round: 7.876066
+Round 1: 8.492284
+Average time: 8.492284
+Running verifier...
+Our running time: 8.613777
+dijkstra running time: 10.333099 
+
+source 1: 8479660   
+Warmup Round: 8.478363
+Round 1: 8.208410
+Average time: 8.208410
+Running verifier...
+Our running time: 8.340570
+dijkstra running time: 11.004264 
+
+source 2: 4739329   
+Warmup Round: 8.904806
+Round 1: 8.557213
+Average time: 8.557213
+Running verifier...
+Our running time: 9.790989
+dijkstra running time: 11.450528 
+

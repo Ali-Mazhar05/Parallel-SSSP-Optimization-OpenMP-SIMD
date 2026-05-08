@@ -1,0 +1,27 @@
+Reading graph...
+Generating edge weights...
+Running on Germany_sym.bin: |V|=12277375, |E|=32266600, param=32768, num_src=3, num_round=1
+source 0: 7832761   
+Warmup Round: 6.106373
+Round 1: 5.191163
+Average time: 5.191163
+Running verifier...
+Our running time: 5.534670
+dijkstra running time: 10.232925 
+
+source 1: 8479660   
+Warmup Round: 6.299826
+Round 1: 6.296047
+Average time: 6.296047
+Running verifier...
+Our running time: 6.076433
+dijkstra running time: 10.567979 
+
+source 2: 4739329   
+Warmup Round: 5.079605
+Round 1: 5.497675
+Average time: 5.497675
+Running verifier...
+Our running time: 6.276640
+dijkstra running time: 10.225231 
+
