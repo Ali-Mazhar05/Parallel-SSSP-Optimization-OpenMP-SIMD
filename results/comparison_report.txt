@@ -1,0 +1,25 @@
+SSSP Performance & Correctness Comparison Report
+Generated : Fri May  8 11:02:49 AM PKT 2026
+Graph     : chain_1e7_sym.bin
+Algorithm : rho-stepping  |  Param: default
+
+Src#    Base(s)        OMP-2t(s)     Spdup     OMP-4t(s)     Spdup     OMP-8t(s)     Spdup     OMP-12t(s)    Spdup   
+────────────────────────────────────────────────────────────────────────────────────────
+1       0.034382       0.414954      0.08x     0.365457      0.09x     0.495929      0.07x     0.646957      0.05x   
+2       0.034775       0.413829      0.08x     0.372065      0.09x     0.520158      0.07x     0.646871      0.05x   
+3       0.035040       0.416212      0.08x     0.367937      0.10x     0.504305      0.07x     0.889079      0.04x   
+────────────────────────────────────────────────────────────────────────────────────────
+AVG     0.034732       0.415000      0.08x     0.368487      0.09x     0.506797      0.07x     0.727637      0.05x   
+
+Wall-clock times:
+  Baseline:      .458s
+  OMP-2t:        3.914s  (wall speedup: 0.12x)
+  OMP-4t:        3.430s  (wall speedup: 0.13x)
+  OMP-8t:        4.624s  (wall speedup: 0.10x)
+  OMP-12t:       6.217s  (wall speedup: 0.07x)
+
+Correctness:
+  OMP-2t : [PASS] All distances match Dijkstra.
+  OMP-4t : [PASS] All distances match Dijkstra.
+  OMP-8t : [PASS] All distances match Dijkstra.
+  OMP-12t : [PASS] All distances match Dijkstra.
