@@ -46,3 +46,4 @@ make omp
 
 ## Performance Analysis
 Detailed performance comparisons between the baseline and optimized versions can be found in the accompanying [Analysis Report](analysis_report.md).
+ 
